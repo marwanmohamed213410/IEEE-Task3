@@ -3,8 +3,6 @@
 #define BUF_SIZE 8
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
-typedef enum {INT, FLOAT, DOUBLE}type;
-
 static signed int wheel_speed_buf[BUF_SIZE];
 static signed int *write_ptr = wheel_speed_buf;
 static signed int count = 0;
@@ -12,12 +10,16 @@ static signed int count = 0;
 signed int sum(unsigned int *arr,unsigned int array_size);
 signed int moving_avg(unsigned int *arr, unsigned int array_size);
 void insert(float value);
+unsigned int delta(unsigned int *arr, unsigned int array_size);
+int* dangling_pointer(void);
+void wild_pointer(void);
 
 int main(void)
 {
     unsigned int test[] = {21, 88, 98, 90, 86, 86, 48, 99, 86};
 
     printf("sum: %d\n", sum(test, ARRAY_SIZE(test)));
+    printf("delta: %d\n", delta(test, ARRAY_SIZE(test)));
 
     printf("Moving Average: %d\n", moving_avg(test, ARRAY_SIZE(test)));
     
@@ -60,3 +62,22 @@ void insert(float value)
         count++;
 }
 
+// Delta calculation
+unsigned int delta(unsigned int *arr, unsigned int array_size)
+{
+    unsigned int last = *(arr + (array_size - 1));
+    unsigned int second_last = *(arr + (array_size - 2));
+
+    return (signed int)last - (signed int)second_last;
+}
+
+int* dangling_pointer(void)
+{
+    int local_val = 100;
+    return &local_val;
+}
+
+void wild_pointer(void)
+{
+    int *wild_ptr;
+}
